@@ -100,3 +100,5 @@ def run():
     print("Pulse ran successfully.")
 
 
+if __name__ == "__main__":
+    run()
