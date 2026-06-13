@@ -59,8 +59,7 @@ def run():
     with open("daily_summary.txt", "w", encoding="utf-8") as f:
         f.write(summary)
         print("pulse ranb successfully.")
-if __name__=="main":
+if __name__ == "__main__":
     run()
-    
 
 
