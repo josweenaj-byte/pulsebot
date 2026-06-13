@@ -96,12 +96,10 @@ def run():
         f.write(summary)
 
     temp, weather = get_openweather()
-
-if True:
-    send_email_alert(temp, weather)
-    print("Weather alert email sent.")
-
-    print("Pulse ran successfully.")
+    if True:
+     send_email_alert(temp, weather)
+     print("Weather alert email sent.")
+     print("Pulse ran successfully.")
 
 
 if __name__ == "__main__":
