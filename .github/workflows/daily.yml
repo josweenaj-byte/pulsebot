@@ -4,7 +4,10 @@ on:
   schedule:
     - cron: "30 2 * * *"
   workflow_dispatch:
-
+env:
+  OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+  EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+  EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
 jobs:
   run-pulse:
     runs-on: ubuntu-latest
@@ -29,3 +32,5 @@ jobs:
         with:
           name: daily-summary
           path: daily_summary.txt
+
+          
