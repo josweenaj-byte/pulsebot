@@ -97,9 +97,9 @@ def run():
 
     temp, weather = get_openweather()
 
-    if temp > 35 or weather.lower() in ["rain", "drizzle", "thunderstorm"]:
-        send_email_alert(temp, weather)
-        print("Weather alert email sent.")
+if True:
+    send_email_alert(temp, weather)
+    print("Weather alert email sent.")
 
     print("Pulse ran successfully.")
 
