@@ -1,15 +1,16 @@
 import requests
 from datetime import date
 import os
+import smtplib
+from email.message import EmailMessage
 
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 EMAIL = os.getenv("EMAIL_ADDRESS")
 PASSWORD = os.getenv("EMAIL_PASSWORD")
-from datetime import date
 
 
 def get_weather(city='Thiruvananthapuram'):
-    url=f'https//wttr.in/{city}?format=3'
+    url=f'https://wttr.in/{city}?format=3'
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
@@ -29,6 +30,36 @@ def get_quote():
         return f'"{quote}" {author}'
     except Exception as e:
         return f"Quote unavailable ({e})"
+
+def get_openweather():
+    city = "Thiruvananthapuram"
+
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+
+    response = requests.get(url, timeout=10)
+    data = response.json()
+
+    temp = data["main"]["temp"]
+    weather = data["weather"][0]["main"]
+
+    return temp, weather
+
+
+def send_email_alert(temp, weather):
+    msg = EmailMessage()
+    msg["Subject"] = "Weather Alert"
+    msg["From"] = EMAIL
+    msg["To"] = EMAIL
+
+    msg.set_content(
+        f"Temperature: {temp}°C\nWeather: {weather}\n\nWeather alert triggered."
+    )
+
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(EMAIL, PASSWORD)
+        server.send_message(msg)
+
 
 def build_summary():
     today=date.today().strftime("%A,%d,%B,%Y")
@@ -56,10 +87,16 @@ def build_summary():
 def run():
     summary = build_summary()
     print(summary)
+
     with open("daily_summary.txt", "w", encoding="utf-8") as f:
         f.write(summary)
-        print("pulse ranb successfully.")
-if __name__ == "__main__":
-    run()
+
+    temp, weather = get_openweather()
+
+    if temp > 35 or weather.lower() in ["rain", "drizzle", "thunderstorm"]:
+        send_email_alert(temp, weather)
+        print("Weather alert email sent.")
+
+    print("Pulse ran successfully.")
 
 
