@@ -37,6 +37,10 @@ def get_openweather():
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
 
     response = requests.get(url, timeout=10)
+
+    print("OpenWeather response:")
+    print(response.text)
+
     data = response.json()
 
     temp = data["main"]["temp"]
