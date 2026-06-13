@@ -1,5 +1,12 @@
 import requests
 from datetime import date
+import os
+
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
+EMAIL = os.getenv("EMAIL_ADDRESS")
+PASSWORD = os.getenv("EMAIL_PASSWORD")
+from datetime import date
+
 
 def get_weather(city='Thiruvananthapuram'):
     url=f'https//wttr.in/{city}?format=3'
